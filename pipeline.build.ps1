@@ -47,6 +47,12 @@ task BuildImageLinux {
     }
 }
 
+task ReleaseImageLinux {
+    exec {
+        docker push docker.pkg.github.com/BernieWhite/TestRepo/ps-rule:latest-alpine
+    }
+}
+
 task . Build
 
 task Build {

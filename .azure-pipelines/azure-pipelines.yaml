@@ -52,10 +52,5 @@ stages:
     - powershell: Invoke-Build BuildImageLinux -Configuration $(buildConfiguration) -Build $(Build.BuildNumber)
       displayName: 'Build container image'
 
-    - task: Docker@2
-      displayName: Push image
-      inputs:
-        command: push
-        containerRegistry: AzureDevOps-PSRule.Rules
-        tags: |
-          docker.pkg.github.com/BernieWhite/TestRepo/ps-rule:latest-alpine
+    - powershell: Invoke-Build ReleaseImageLinux -Configuration $(buildConfiguration) -Build $(Build.BuildNumber)
+      displayName: 'Push container image'
