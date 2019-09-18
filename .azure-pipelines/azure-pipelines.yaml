@@ -46,7 +46,7 @@ stages:
       displayName: Login to registry
       inputs:
         command: login
-        containerRegistry: AzureDevOps-PSRule.Rules
+        containerRegistry: 'Packages-PSRule.Rules'
 
     # Build module
     - powershell: Invoke-Build BuildImageLinux -Configuration $(buildConfiguration) -Build $(Build.BuildNumber)
