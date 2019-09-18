@@ -11,7 +11,9 @@ ARG MODULE_VERSION=0.8.0
 # Use PowerShell image
 FROM ${imageRepo}:${fromTag}
 SHELL ["pwsh", "-NoLogo", "-NoProfile", "-Command"]
-RUN Install-Module -Name PSRule -RequiredVersion '${MODULE_VERSION}' -Force;
+RUN Install-Module -Name PSRule -RequiredVersion ${MODULE_VERSION} -Force;
+
+CMD ["pwsh"]
 
 # Add standard labels -- http://label-schema.org/
 LABEL maintainer="Bernie White" \
@@ -24,5 +26,3 @@ LABEL maintainer="Bernie White" \
     org.label-schema.vendor="Bernie White" \
     org.label-schema.version=${MODULE_VERSION} \
     org.label-schema.schema-version="1.0"
-
-CMD ["pwsh"]

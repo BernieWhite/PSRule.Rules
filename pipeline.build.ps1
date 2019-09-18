@@ -16,6 +16,7 @@ Write-Host -Object "[Pipeline] -- ArtifactPath: $ArtifactPath" -ForegroundColor 
 Write-Host -Object "[Pipeline] -- BuildNumber: $($Env:BUILD_BUILDNUMBER)" -ForegroundColor Green;
 Write-Host -Object "[Pipeline] -- SourceBranch: $($Env:BUILD_SOURCEBRANCH)" -ForegroundColor Green;
 Write-Host -Object "[Pipeline] -- SourceBranchName: $($Env:BUILD_SOURCEBRANCHNAME)" -ForegroundColor Green;
+Write-Host -Object "[Pipeline] -- Commit: $($Env:BUILD_SOURCEVERSION)" -ForegroundColor Green;
 
 if ($Env:SYSTEM_DEBUG -eq 'true') {
     $VerbosePreference = 'Continue';
@@ -41,7 +42,9 @@ Write-Host -Object "[Pipeline] -- Using version: $version" -ForegroundColor Gree
 Write-Host -Object "[Pipeline] -- Using versionSuffix: $versionSuffix" -ForegroundColor Green;
 
 task BuildImage {
-    docker build -f docker/stable/alpine/docker/Dockerfile -t ps-rule:latest-alpine-3.8 .
+    exec {
+        docker build -f docker/stable/alpine/docker/Dockerfile -t ps-rule:latest-alpine-3.8 --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION .
+    }
 }
 
 task . Build
