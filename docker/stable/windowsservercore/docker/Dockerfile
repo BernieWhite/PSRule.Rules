@@ -4,7 +4,7 @@
 # PSRule
 #
 
-ARG fromTag=windowsservercore-1903
+ARG fromTag=windowsservercore-1809
 ARG imageRepo=mcr.microsoft.com/powershell
 ARG VCS_REF="none"
 ARG MODULE_VERSION=0.8.0
