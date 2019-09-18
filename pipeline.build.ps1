@@ -8,6 +8,9 @@ param (
     [String]$Configuration = 'Debug',
 
     [Parameter(Mandatory = $False)]
+    [String]$Registry = 'docker.pkg.github.com/berniewhite/testrepo',
+
+    [Parameter(Mandatory = $False)]
     [String]$ArtifactPath = (Join-Path -Path $PWD -ChildPath out/modules)
 )
 
@@ -41,9 +44,13 @@ if ($version -like '*-*') {
 Write-Host -Object "[Pipeline] -- Using version: $version" -ForegroundColor Green;
 Write-Host -Object "[Pipeline] -- Using versionSuffix: $versionSuffix" -ForegroundColor Green;
 
+$containerRegistry = $Registry;
+
+Write-Host -Object "[Pipeline] -- Using registry: $containerRegistry" -ForegroundColor Green;
+
 task BuildImageLinux {
     exec {
-        docker build -f docker/stable/alpine/docker/Dockerfile -t docker.pkg.github.com/BernieWhite/TestRepo/ps-rule:latest-alpine --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION .
+        docker build -f docker/stable/alpine/docker/Dockerfile -t $containerRegistry/ps-rule:latest-alpine --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION .
     }
 }
 

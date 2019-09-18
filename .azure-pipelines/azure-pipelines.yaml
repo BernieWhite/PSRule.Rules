@@ -4,6 +4,7 @@
 variables:
   version: '0.1.0'
   buildConfiguration: 'Release'
+  registry: 
 
 # Use build number format, i.e. 0.1.0-B1811001
 name: $(version)-B$(date:yyMM)$(rev:rrr)
@@ -49,8 +50,8 @@ stages:
         containerRegistry: 'Packages-PSRule.Rules'
 
     # Build module
-    - powershell: Invoke-Build BuildImageLinux -Configuration $(buildConfiguration) -Build $(Build.BuildNumber)
+    - powershell: Invoke-Build BuildImageLinux -Configuration $(buildConfiguration) -Build $(Build.BuildNumber) -Registry $(registry)
       displayName: 'Build container image'
 
-    - powershell: Invoke-Build ReleaseImageLinux -Configuration $(buildConfiguration) -Build $(Build.BuildNumber)
+    - powershell: Invoke-Build ReleaseImageLinux -Configuration $(buildConfiguration) -Build $(Build.BuildNumber) -Registry $(registry)
       displayName: 'Push container image'
