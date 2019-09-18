@@ -42,6 +42,20 @@ stages:
       displayName: 'Install dependencies'
 
     # Build module
-    - powershell: Invoke-Build -Configuration $(buildConfiguration) -Build $(Build.BuildNumber)
+    - task: Docker@2
+      displayName: Login to registry
+      inputs:
+        command: login
+        containerRegistry: AzureDevOps-PSRule.Rules
+
+    # Build module
+    - powershell: Invoke-Build BuildImageLinux -Configuration $(buildConfiguration) -Build $(Build.BuildNumber)
       displayName: 'Build container image'
 
+    - task: Docker@2
+      displayName: Push image
+      inputs:
+        command: push
+        containerRegistry: AzureDevOps-PSRule.Rules
+        tags:
+          docker.pkg.github.com/BernieWhite/TestRepo/ps-rule:latest-alpine

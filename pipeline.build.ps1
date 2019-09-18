@@ -41,12 +41,14 @@ if ($version -like '*-*') {
 Write-Host -Object "[Pipeline] -- Using version: $version" -ForegroundColor Green;
 Write-Host -Object "[Pipeline] -- Using versionSuffix: $versionSuffix" -ForegroundColor Green;
 
-task BuildImage {
+task BuildImageLinux {
     exec {
-        docker build -f docker/stable/alpine/docker/Dockerfile -t ps-rule:latest-alpine-3.8 --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION .
+        docker build -f docker/stable/alpine/docker/Dockerfile -t docker.pkg.github.com/BernieWhite/TestRepo/ps-rule:latest-alpine --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION .
     }
 }
 
 task . Build
 
-task Build BuildImage
+task Build {
+
+}
