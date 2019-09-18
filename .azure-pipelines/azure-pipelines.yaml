@@ -34,9 +34,9 @@ stages:
         Linux:
           displayName: 'Linux'
           imageName: 'ubuntu-16.04'
-        Windows:
-          displayName: 'Windows'
-          imageName: 'windows-2019'
+        # Windows:
+        #   displayName: 'Windows'
+        #   imageName: 'windows-2019'
     pool:
       vmImage: $(imageName)
     displayName: 'Docker'

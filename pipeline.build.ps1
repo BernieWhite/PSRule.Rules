@@ -49,29 +49,29 @@ $containerRegistry = $Registry;
 Write-Host -Object "[Pipeline] -- Using registry: $containerRegistry" -ForegroundColor Green;
 
 task BuildImage {
-    if ($Env:IMAGENAME -eq 'ubuntu-16.04') {
+    # if ($Env:IMAGENAME -eq 'ubuntu-16.04') {
         exec {
             docker build -f docker/stable/alpine/docker/Dockerfile -t $containerRegistry/ps-rule:latest-alpine --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION .
         }
-    }
-    elseif ($Env:IMAGENAME -eq 'windows-2019') {
+    # }
+    # elseif ($Env:IMAGENAME -eq 'windows-2019') {
         exec {
             docker build -f docker/stable/windowsservercore/docker/Dockerfile -t $containerRegistry/ps-rule:latest-windowsservercore --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION .
         }
-    }
+    # }
 }
 
 task ReleaseImage {
-    if ($Env:IMAGENAME -eq 'ubuntu-16.04') {
+    # if ($Env:IMAGENAME -eq 'ubuntu-16.04') {
         exec {
             docker push $containerRegistry/ps-rule:latest-alpine
         }
-    }
-    elseif ($Env:IMAGENAME -eq 'windows-2019') {
+    # }
+    # elseif ($Env:IMAGENAME -eq 'windows-2019') {
         exec {
             docker push $containerRegistry/ps-rule:latest-windowsservercore
         }
-    }
+    # }
 }
 
 task . Build
