@@ -40,12 +40,8 @@ if ($version -like '*-*') {
 Write-Host -Object "[Pipeline] -- Using version: $version" -ForegroundColor Green;
 Write-Host -Object "[Pipeline] -- Using versionSuffix: $versionSuffix" -ForegroundColor Green;
 
-if ($Env:coverage -eq 'true') {
-    $CodeCoverage = $True;
-}
-
 task BuildImage {
-    docker build -f docker/stable/alpine/docker/Dockerfile -t ps-rule:latest-alpine-3.8
+    docker build -f docker/stable/alpine/docker/Dockerfile -t ps-rule:latest-alpine-3.8 .
 }
 
 task . Build
