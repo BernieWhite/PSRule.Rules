@@ -1,7 +1,7 @@
 
 #
 # PSRule
-# 
+#
 
 ARG fromTag=alpine-3.8
 ARG imageRepo=mcr.microsoft.com/powershell

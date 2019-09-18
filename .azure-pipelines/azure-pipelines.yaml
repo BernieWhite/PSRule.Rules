@@ -34,6 +34,9 @@ stages:
         Linux:
           displayName: 'Linux'
           imageName: 'ubuntu-16.04'
+        Windows:
+          displayName: 'Windows'
+          imageName: 'windows-2019'
     pool:
       vmImage: $(imageName)
     displayName: 'Docker'
@@ -50,8 +53,8 @@ stages:
         containerRegistry: 'Packages-PSRule.Rules'
 
     # Build module
-    - powershell: Invoke-Build BuildImageLinux -Configuration $(buildConfiguration) -Build $(Build.BuildNumber) -Registry $(registry)
+    - powershell: Invoke-Build BuildImage -Configuration $(buildConfiguration) -Build $(Build.BuildNumber) -Registry $(registry)
       displayName: 'Build container image'
 
-    - powershell: Invoke-Build ReleaseImageLinux -Configuration $(buildConfiguration) -Build $(Build.BuildNumber) -Registry $(registry)
+    - powershell: Invoke-Build ReleaseImage -Configuration $(buildConfiguration) -Build $(Build.BuildNumber) -Registry $(registry)
       displayName: 'Push container image'
