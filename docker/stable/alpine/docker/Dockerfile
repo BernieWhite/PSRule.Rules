@@ -5,11 +5,12 @@
 
 ARG fromTag=alpine-3.8
 ARG imageRepo=mcr.microsoft.com/powershell
+ARG VCS_REF="none"
 ARG MODULE_VERSION=0.8.0
 
 # Use PowerShell image
 FROM ${imageRepo}:${fromTag}
-SHELL ["pwsh", "-Command"]
+SHELL ["pwsh", "-NoLogo", "-NoProfile", "-Command"]
 RUN Install-Module -Name PSRule -RequiredVersion '${MODULE_VERSION}' -Force;
 
 # Add standard labels -- http://label-schema.org/
@@ -22,6 +23,6 @@ LABEL maintainer="Bernie White" \
     org.label-schema.vcs-ref=${VCS_REF} \
     org.label-schema.vendor="Bernie White" \
     org.label-schema.version=${MODULE_VERSION} \
-    org.label-schema.schema-version="1.0" \
+    org.label-schema.schema-version="1.0"
 
-CMD [ "pwsh" ]
+CMD ["pwsh"]
