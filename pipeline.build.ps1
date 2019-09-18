@@ -8,7 +8,7 @@ param (
     [String]$Configuration = 'Debug',
 
     [Parameter(Mandatory = $False)]
-    [String]$Registry = 'docker.pkg.github.com/berniewhite/testrepo',
+    [String]$Registry,
 
     [Parameter(Mandatory = $False)]
     [String]$ArtifactPath = (Join-Path -Path $PWD -ChildPath out/modules)
@@ -56,7 +56,7 @@ task BuildImageLinux {
 
 task ReleaseImageLinux {
     exec {
-        docker push docker.pkg.github.com/BernieWhite/TestRepo/ps-rule:latest-alpine
+        docker push $containerRegistry/ps-rule:latest-alpine
     }
 }
 
