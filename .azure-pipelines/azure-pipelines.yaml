@@ -57,5 +57,5 @@ stages:
       inputs:
         command: push
         containerRegistry: AzureDevOps-PSRule.Rules
-        tags:
+        tags: |
           docker.pkg.github.com/BernieWhite/TestRepo/ps-rule:latest-alpine
