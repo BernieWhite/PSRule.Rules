@@ -1,0 +1,47 @@
+# Azure DevOps
+# CI pipeline for PSRule.Rules
+
+variables:
+  version: '0.1.0'
+  buildConfiguration: 'Release'
+
+# Use build number format, i.e. 0.1.0-B1811001
+name: $(version)-B$(date:yyMM)$(rev:rrr)
+
+trigger: none
+  # branches:
+  #   include:
+  #   - 'master'
+  # tags:
+  #   include:
+  #   - 'v0.*'
+
+pr: none
+  # branches:
+  #   include:
+  #   - 'master'
+
+stages:
+
+# Build pipeline
+- stage: Build
+  displayName: Build
+  jobs:
+  - job:
+    strategy:
+      matrix:
+        Linux:
+          displayName: 'Linux'
+          imageName: 'ubuntu-16.04'
+    pool:
+      vmImage: $(imageName)
+    displayName: 'PowerShell'
+    steps:
+    # Install pipeline dependencies
+    - powershell: ./.azure-pipelines/pipeline-deps.ps1
+      displayName: 'Install dependencies'
+
+    # Build module
+    - powershell: Invoke-Build -Configuration $(buildConfiguration) -Build $(Build.BuildNumber)
+      displayName: 'Build container image'
+
