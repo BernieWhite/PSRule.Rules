@@ -6,7 +6,7 @@
 ARG fromTag=alpine-3.8
 ARG imageRepo=mcr.microsoft.com/powershell
 ARG VCS_REF="none"
-ARG MODULE_VERSION=0.8.0
+ARG MODULE_VERSION=0.9.0
 
 # Use PowerShell image
 FROM ${imageRepo}:${fromTag}
