@@ -52,15 +52,40 @@ $baseImage = $Env:BASEIMAGE;
 
 Write-Host -Object "[Pipeline] -- Using base image: $baseImage" -ForegroundColor Green;
 
-task BuildImage {
+# Synopsis: Install NuGet provider
+task NuGet {
+    if ($Null -eq (Get-PackageProvider -Name NuGet -ErrorAction Ignore)) {
+        Install-PackageProvider -Name NuGet -Force -Scope CurrentUser;
+    }
+}
+
+task PSRuleStable NuGet, {
+    Install-Module -Name PSRule -Repository PSGallery -MinimumVersion 0.9.0 -Scope CurrentUser -Force;
+}
+
+task PSRuleLatest NuGet, {
+    Install-Module -Name PSRule -Repository PSGallery -MinimumVersion 0.9.0 -AllowPrerelease -Scope CurrentUser -Force;
+}
+
+task BuildImage PSRuleStable, PSRuleLatest, {
+    $versions = (Get-InstalledModule -Name PSRule -AllVersions -ErrorAction Ignore);
+    $stableVersion = @($versions | Where-Object -FilterScript {
+        $_.Version -notlike "*-*"
+    })[0].Version;
+    $latestVersion = @($versions | Where-Object -FilterScript {
+        $_.Version -like "*-*"
+    })[0].Version;
+
     exec {
-        docker build -f docker/stable/$baseImage/docker/Dockerfile -t $containerRegistry/ps-rule:latest-$baseimage --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION .
+        docker build -f docker/latest/$baseImage/docker/Dockerfile -t $containerRegistry/ps-rule:latest-$baseimage --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION --build-tag MODULE_VERSION=$latestVersion .
+        docker build -f docker/stable/$baseImage/docker/Dockerfile -t $containerRegistry/ps-rule:stable-$baseimage --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION --build-tag MODULE_VERSION=$stableVersion .
     }
 }
 
 task ReleaseImage {
     exec {
         docker push $containerRegistry/ps-rule:latest-$baseImage
+        docker push $containerRegistry/ps-rule:stable-$baseImage
     }
 }
 
