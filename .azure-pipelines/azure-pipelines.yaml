@@ -31,12 +31,18 @@ stages:
   - job:
     strategy:
       matrix:
-        Linux:
-          displayName: 'Linux'
+        Alpine:
+          displayName: 'Alpine'
+          baseImage: 'alpine'
           imageName: 'ubuntu-16.04'
-        Windows:
-          displayName: 'Windows'
-          imageName: 'windows-2019'
+        Ubuntu:
+          displayName: 'Ubuntu'
+          baseImage: 'ubuntu'
+          imageName: 'ubuntu-16.04'
+        # Windows:
+        #   displayName: 'Windows'
+        #   baseImage: windowsservercore
+        #   imageName: 'windows-2019'
     pool:
       vmImage: $(imageName)
     displayName: 'Docker'

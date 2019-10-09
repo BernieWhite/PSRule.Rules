@@ -48,31 +48,19 @@ $containerRegistry = $Registry;
 
 Write-Host -Object "[Pipeline] -- Using registry: $containerRegistry" -ForegroundColor Green;
 
+$baseImage = $Env:BASEIMAGE;
+
+Write-Host -Object "[Pipeline] -- Using base image: $baseImage" -ForegroundColor Green;
+
 task BuildImage {
-    if ($Env:IMAGENAME -eq 'ubuntu-16.04') {
-        exec {
-            docker build -f docker/stable/alpine/docker/Dockerfile -t $containerRegistry/ps-rule:latest-alpine --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION .
-            docker build -f docker/stable/alpine/docker/Dockerfile -t $containerRegistry/ps-rule:latest-ubuntu --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION .
-        }
-    }
-    elseif ($Env:IMAGENAME -eq 'windows-2019') {
-        exec {
-            docker build -f docker/stable/windowsservercore/docker/Dockerfile -t $containerRegistry/ps-rule:latest-windowsservercore --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION .
-        }
+    exec {
+        docker build -f docker/stable/$baseImage/docker/Dockerfile -t $containerRegistry/ps-rule:latest-$baseimage --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION .
     }
 }
 
 task ReleaseImage {
-    if ($Env:IMAGENAME -eq 'ubuntu-16.04') {
-        exec {
-            docker push $containerRegistry/ps-rule:latest-alpine
-            docker push $containerRegistry/ps-rule:latest-ubuntu
-        }
-    }
-    elseif ($Env:IMAGENAME -eq 'windows-2019') {
-        exec {
-            docker push $containerRegistry/ps-rule:latest-windowsservercore
-        }
+    exec {
+        docker push $containerRegistry/ps-rule:latest-$baseImage
     }
 }
 
