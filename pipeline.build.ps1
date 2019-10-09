@@ -77,8 +77,8 @@ task BuildImage PSRuleStable, PSRuleLatest, {
     })[0].Version;
 
     exec {
-        docker build -f docker/latest/$baseImage/docker/Dockerfile -t $containerRegistry/ps-rule:latest-$baseimage --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION --build-tag MODULE_VERSION=$latestVersion .
-        docker build -f docker/stable/$baseImage/docker/Dockerfile -t $containerRegistry/ps-rule:stable-$baseimage --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION --build-tag MODULE_VERSION=$stableVersion .
+        docker build -f docker/latest/$baseImage/docker/Dockerfile -t $containerRegistry/ps-rule:latest-$baseimage --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION --build-arg MODULE_VERSION=$latestVersion .
+        docker build -f docker/stable/$baseImage/docker/Dockerfile -t $containerRegistry/ps-rule:stable-$baseimage --build-arg VCS_REF=$Env:BUILD_SOURCEVERSION --build-arg MODULE_VERSION=$stableVersion .
     }
 }
 
